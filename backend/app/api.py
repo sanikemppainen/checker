@@ -33,3 +33,13 @@ async def add_data(question_and_answer: dict) -> dict:
     }
     question_and_answers.append(returnable_dict)
     return {"data": {"data added."}}
+
+
+@app.delete("/data/{id}", tags=["data"])
+async def delete_data(id: int) -> dict:
+    for data in question_and_answers:
+        if int(data["id"]) == id:
+            question_and_answers.remove(data)
+            return {"data": f"data with id {id} has been removed."}
+
+    return {"data": f"data with id {id} not found."}
