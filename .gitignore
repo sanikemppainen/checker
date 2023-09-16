@@ -3,3 +3,4 @@
 .vscode
 tests/__pycache__/
 tests/.pytest_cache
+./backend/.pytest_cache
