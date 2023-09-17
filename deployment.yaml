@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  labels:
+    app: react-app
+spec:
+  replicas: 2 # number of replicas
+  selector:
+    matchLabels:
+      app: react-app
+  template:
+    metadata:
+      labels:
+        app: react-app
+    spec:
+      containers:
+        - name: backend
+          image: ksaniksani/checker-backend:latest # Replace with your backend image
+          ports:
+            - containerPort: 8000
+          command:
+            [
+              "poetry",
+              "run",
+              "uvicorn",
+              "main:app",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8000",
+              "--reload",
+            ]
+
+        - name: frontend
+          image: ksaniksani/checker-frontend::latest # Replace with your frontend image
+          ports:
+            - containerPort: 3000
+          command: ["yarn", "start"]
