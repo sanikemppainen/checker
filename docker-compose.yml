@@ -1,0 +1,19 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend  # Specify the context for the backend service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000","--reload"]
+
+  frontend:
+    build:
+      context: ./frontend  # Specify the context for the frontend service
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    command: ["yarn", "start"]
