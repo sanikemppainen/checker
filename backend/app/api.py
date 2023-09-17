@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.openAIAPIcalls import get_ai_answer
-from backend.app.check_similarity import get_similarity
+from app.check_similarity import get_similarity
 
 app = FastAPI()
 
