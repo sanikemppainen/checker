@@ -9,9 +9,9 @@ environment {
 
   stages {
 
-    stage('Checkout Source') {
+    stage('Checkout github source') {
       steps {
-        git 'https://github.com/sanikemppainen/checker.git'
+        git 'https://github.com/sanikemppainen/checker'
       }
     }
 
