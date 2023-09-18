@@ -11,7 +11,8 @@ environment {
 
     stage('Checkout github source') {
       steps {
-        git 'https://github.com/sanikemppainen/checker'
+        git url:'https://github.com/sanikemppainen/checker',
+            branch: "main"
       }
     }
 
