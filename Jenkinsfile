@@ -17,7 +17,7 @@ environment {
             branch: "main"
       }
     }
-
+  }
 
     stage('Build') {
         steps {
