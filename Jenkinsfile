@@ -1,9 +1,11 @@
 pipeline {
 
-def backendDockerImage = "ksaniksani/checker-backend:latest"
-def frontendDockerImage = "ksaniksani/checker-frontend:latest"
-def dockerBackendImage = ""
-def dockerFrontendImage = ""
+environment {
+    backendDockerImage = "ksaniksani/checker-backend"  
+    frontendDockerImage = "ksaniksani/checker-frontend" 
+    dockerBackendImage = ""
+    dockerFrontendImage = ""
+}
 
   agent any
 
