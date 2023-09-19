@@ -7,7 +7,11 @@ environment {
     dockerFrontendImage = ""
 }
 
-  agent any
+   agent {
+        docker {
+            image 'docker:20.10'  // Use a Docker-capable agent image
+        }
+    }
 
   stages {
 
@@ -18,10 +22,16 @@ environment {
       }
     }
 
+
     stage('Build Backend Image') {
         steps {
             script {
-                dockerBackendImage = docker.build(backendDockerImage)
+                 // Define the Dockerfile location and image name
+                def dockerfile = './Dockerfile'  // Path to your Dockerfile
+                def imageName = 'ksaniksani/checker-backend:latest'
+
+                // Build the Docker image
+                docker.build(imageName, '-f ' + dockerfile + ' .')
             }
         }
     }
