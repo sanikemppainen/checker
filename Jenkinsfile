@@ -16,6 +16,7 @@ environment {
             branch: "main"
       }
     }
+  }
 
     stage('Build Backend Image') {
         steps {
