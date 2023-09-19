@@ -7,11 +7,7 @@ environment {
     dockerFrontendImage = ""
 }
 
-   agent {
-        docker {
-            image 'docker:20.10'  // Use a Docker-capable agent image
-        }
-    }
+   agent any
 
   stages {
 
@@ -23,18 +19,11 @@ environment {
     }
 
 
-    stage('Build Backend Image') {
+    stage('Build') {
         steps {
-            script {
-                 // Define the Dockerfile location and image name
-                def dockerfile = './Dockerfile'  // Path to your Dockerfile
-                def imageName = 'ksaniksani/checker-backend:latest'
-
-                // Build the Docker image
-                docker.build(imageName, '-f ' + dockerfile + ' .')
-            }
+            bat "docker build --no-cache . -t checker-backend:latest"
+            
         }
-    }
 
     stage('Push Backend Image') {
         environment {
