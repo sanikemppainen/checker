@@ -3,6 +3,8 @@ pipeline {
 environment {
     backendDockerImage = "ksaniksani/checker-backend"  
     frontendDockerImage = "ksaniksani/checker-frontend" 
+    dockerBackendImage = ""
+    dockerFrontendImage = ""
 }
 
   agent any

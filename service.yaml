@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: backend-service
   labels:
-    app: react-app
+    app: backend-service
 spec:
   selector:
-    app: react-app
+    app: checker-backend
     name: backend  # Match the name of the backend container
   ports:
     - protocol: TCP
@@ -19,10 +19,10 @@ kind: Service
 metadata:
   name: frontend-service
   labels:
-    app: react-app
+    app: frontend-service
 spec:
   selector:
-    app: react-app
+    app: checker-frontend
     name: frontend  # Match the name of the frontend container
   ports:
     - protocol: TCP
