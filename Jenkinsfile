@@ -9,20 +9,19 @@ environment {
 
    agent any
 
-  stages {
+    stages {
 
     stage('Checkout github source') {
-      steps {
+        steps {
         git url:'https://github.com/sanikemppainen/checker',
             branch: "main"
-      }
+        }
     }
-  }
+    }
 
     stage('Build') {
         steps {
-            bat "docker build --no-cache . -t checker-backend:latest"
-            
+            sh "docker build -t backend-image ./backend"
         }
 
     stage('Push Backend Image') {
