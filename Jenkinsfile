@@ -1,10 +1,9 @@
 pipeline {
 
 environment {
-    backendDockerImage = "ksaniksani/checker-backend"  
-    frontendDockerImage = "ksaniksani/checker-frontend" 
-    dockerBackendImage = ""
-    dockerFrontendImage = ""
+    BACKEND_IMAGE = "ksaniksani/checker-backend"  
+    FRONTEND_IMAGE = "ksaniksani/checker-frontend" 
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
 }
 
   agent any
@@ -20,8 +19,10 @@ environment {
 
     stage('Build Backend Image') {
         steps {
-            script {
-                dockerBackendImage = docker.build backendDockerImage
+             script {
+                    docker.withRegistry(DOCKERHUB_CREDENTIALS) {
+                        def backendImage = docker.build(BACKEND_IMAGE)
+                        backendImage.push()
             }
         }
     }

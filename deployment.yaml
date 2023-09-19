@@ -1,39 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: backend-deployment
   labels:
-    app: react-app
+    app: checker-backend
 spec:
-  replicas: 2 # number of replicas
+  replicas: 2 # Number of backend pods to run
   selector:
     matchLabels:
-      app: react-app
+      app: checker-backend
   template:
     metadata:
       labels:
-        app: react-app
+        app: checker-backend
     spec:
       containers:
         - name: backend
-          image: ksaniksani/checker-backend:latest # Replace with your backend image
+          image: ksaniksani/checker-backend:latest
           ports:
             - containerPort: 8000
           command:
-            [
-              "poetry",
-              "run",
-              "uvicorn",
-              "main:app",
-              "--host",
-              "0.0.0.0",
-              "--port",
-              "8000",
-              "--reload",
-            ]
+            - "poetry"
+            - "run"
+            - "uvicorn"
+            - "main:app"
+            - "--host"
+            - "0.0.0.0"
+            - "--port"
+            - "8000"
+            - "--reload"
 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: checker-frontend
+spec:
+  replicas: 2 # Number of frontend pods to run
+  selector:
+    matchLabels:
+      app: checker-frontend
+  template:
+    metadata:
+      labels:
+        app: checker-frontend
+    spec:
+      containers:
         - name: frontend
-          image: ksaniksani/checker-frontend::latest # Replace with your frontend image
+          image: ksaniksani/checker-frontend:latest
           ports:
             - containerPort: 3000
-          command: ["yarn", "start"]
+          command:
+            - "yarn"
+            - "start"

@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: backend-service
   labels:
-    app: backend-service
+    app: checker-backend
 spec:
   selector:
     app: checker-backend
@@ -19,7 +19,7 @@ kind: Service
 metadata:
   name: frontend-service
   labels:
-    app: frontend-service
+    app: checker-frontend
 spec:
   selector:
     app: checker-frontend
