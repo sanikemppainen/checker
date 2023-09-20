@@ -23,7 +23,7 @@ stages {
     stage('Build Backend Image') {
         steps {
             script {
-                def dockerImage = docker.build("ksaniksani/checker-backend:latest", '-f Dockerfile ./backend')
+                sh 'docker build -t backend-image ./backend'
             }
         }
     }
