@@ -22,7 +22,6 @@ stages {
     stage('Build Backend Image') {
         steps {
             script {
-                //dockerBackendImage = sh(script:"docker build -t ksaniksani/checker-backend -f ./backend/Dockerfile ./backend", returnStatus: true)
                 dockerBackendImage = docker.build("ksaniksani/checker-backend:latest", "./backend")
 
             }
@@ -45,7 +44,7 @@ stages {
     stage('Build Frontend Image') {
         steps {
             script {
-                dockerFrontendImage = docker.build frontendDockerImage
+                dockerFrontendImage = docker.build("ksaniksani/checker-frontend:latest", "./frontend")
             }
         }
     }
