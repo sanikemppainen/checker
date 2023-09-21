@@ -22,9 +22,7 @@ stages {
     stage('Build Backend Image') {
         steps {
             script {
-                sh 'DOCKER_BUILDKIT=0 docker build -t ksaniksani/checker-backend .'
-
-                dockerBackendImage = docker.build backendDockerImage
+                sh "docker build -t ksaniksani/checker-backend -f ./backend/Dockerfile ./backend"
             }
         }
     }
