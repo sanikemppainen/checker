@@ -3,8 +3,8 @@ pipeline {
 environment {
     backendDockerImage = "ksaniksani/checker-backend"  
     frontendDockerImage = "ksaniksani/checker-frontend" 
-    dockerBackendImage = ""
-    dockerFrontendImage = ""
+    def dockerBackendImage = ""
+    def dockerFrontendImage = ""
 }
 
    agent any
@@ -22,7 +22,7 @@ stages {
     stage('Build Backend Image') {
         steps {
             script {
-                sh "docker build -t ksaniksani/checker-backend -f ./backend/Dockerfile ./backend"
+                dockerBackendImage = sh(script:"docker build -t ksaniksani/checker-backend -f ./backend/Dockerfile ./backend", returnStatus: true)
             }
         }
     }
