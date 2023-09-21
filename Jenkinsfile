@@ -18,19 +18,11 @@ stages {
             }
         }
     
-    stage('Initialize'){
-        steps {
-            script {
-                def dockerHome = tool 'docker'
-                env.PATH = "${dockerHome}/bin:${env.PATH}"
-            }
-        }
-    }
 
     stage('Build Backend Image') {
         steps {
             script {
-                sh 'docker build -t backend-image ./backend'
+                dockerBackendImage = docker.build backendDockerImage
             }
         }
     }
