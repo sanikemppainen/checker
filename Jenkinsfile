@@ -66,9 +66,9 @@ stages {
     stage('Deploying React.js container to Kubernetes') {
         steps {
             script {
-                kubeconfig([(credentialsId: 'kubernetes-credentials', variable: 'KUBECONFIG'), serverUrl: 'https://cluster-1-dns-cfc5ka74.hcp.norwayeast.azmk8s.io:443', contextName: 'DefaultResourceGroup-NOE', clusterName:'cluster-1']) {
-                        sh 'kubectl apply --kubeconfig=$KUBECONFIG -f deployment.yaml'
-                        sh 'kubectl apply --kubeconfig=$KUBECONFIG -f service.yaml'
+                kubeconfig([credentialsId: 'kubernetes-credentials', serverUrl: 'https://cluster-1-dns-cfc5ka74.hcp.norwayeast.azmk8s.io:443', contextName: 'DefaultResourceGroup-NOE', clusterName:'cluster-1']) {
+                        sh 'kubectl apply --kubeconfig=kubernetes-credentials -f deployment.yaml'
+                        sh 'kubectl apply --kubeconfig=kubernetes-credentials -f service.yaml'
                 }
             }
         }
