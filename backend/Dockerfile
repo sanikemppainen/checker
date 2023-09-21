@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install poetry
 
 # Set the working directory to /app
-WORKDIR /app/backend
+WORKDIR /app
 
 # Copy pyproject.toml and poetry.lock to the container
 COPY pyproject.toml poetry.lock ./
