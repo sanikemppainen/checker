@@ -66,8 +66,10 @@ stages {
     stage('Deploying React.js container to Kubernetes') {
         steps {
             script {
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
+                withCredentials([kubeconfig(credentialsId: 'kubernetes-credentials', variable: 'KUBECONFIG')]) {
+                        sh 'kubectl apply --kubeconfig=$KUBECONFIG -f deployment.yaml'
+                        sh 'kubectl apply --kubeconfig=$KUBECONFIG -f service.yaml'
+                }
             }
         }
     }
