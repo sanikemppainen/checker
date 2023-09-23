@@ -61,23 +61,26 @@ stages {
             }
         }
     }
-
-    withEnv(['AZURE_SUBSCRIPTION_ID=2fb3df47-cbc0-4acb-9d14-6a6cbffae88d','AZURE_TENANT_ID=03347ba1-ebe2-43d2-89ac-2dae816a3cff']) {
-        stage('deploy') {
-            
-            def resourceGroup = 'myResourceGroup'
-            def webAppName = 'checkerApp-1'
-            // login Azure
-            withCredentials([usernamePassword(credentialsId: 'azureserviceprincipal-credentials', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
-                sh '''
-                    az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
-                    az account set -s $AZURE_SUBSCRIPTION_ID
-                    '''
-            
+    
+    stage('Azure Login') {
+        steps {
+            script {
+                def azureServicePrincipal = credentials('azureserviceprincipal-credentials')
+                withAzureServicePrincipal(
+                    credentialsId: 'azureserviceprincipal-credentials',
+                    subscriptionId: 'azure-subscription-id'
+                ){
+                    kubeconfig([credentialsId: 'kubernetes-credentials', serverUrl: 'https://cluster-1-dns-cfc5ka74.hcp.norwayeast.azmk8s.io:443', contextName: 'DefaultResourceGroup-NOE', clusterName:'cluster-1']) {
+                        sh 'kubectl apply --kubeconfig=$kubernetes-credentials -f deployment.yaml'
+                        sh 'kubectl apply --kubeconfig=$kubernetes-credentials -f service.yaml'
+                }
+                }
             }
         }
     }
-    
+
+}
+
     post { 
         always { 
             cleanWs()
