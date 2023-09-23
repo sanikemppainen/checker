@@ -62,20 +62,35 @@ stages {
         }
     }
 
-
-    stage('Deploying React.js container to Kubernetes') {
-        steps {
+    withEnv(['AZURE_SUBSCRIPTION_ID=2fb3df47-cbc0-4acb-9d14-6a6cbffae88d','AZURE_TENANT_ID=03347ba1-ebe2-43d2-89ac-2dae816a3cff']) {
+        stage('deploy') {
+            
+            def resourceGroup = 'myResourceGroup'
+            def webAppName = 'checkerApp-1'
+            // login Azure
+            withCredentials([usernamePassword(credentialsId: 'azureserviceprincipal-credentials', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
+                sh '''
+                    az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+                    az account set -s $AZURE_SUBSCRIPTION_ID
+                    '''
+            }
             script {
                 kubeconfig([credentialsId: 'kubernetes-credentials', serverUrl: 'https://cluster-1-dns-cfc5ka74.hcp.norwayeast.azmk8s.io:443', contextName: 'DefaultResourceGroup-NOE', clusterName:'cluster-1']) {
                         sh 'kubectl apply --kubeconfig=kubernetes-credentials -f deployment.yaml'
                         sh 'kubectl apply --kubeconfig=kubernetes-credentials -f service.yaml'
                 }
             }
+            
+            // get publish settings
+            //def pubProfilesJson = sh script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
+            //def ftpProfile = getFtpPublishProfile pubProfilesJson
+            // upload package
+            //sh "curl -T target/calculator-1.0.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
+            // log out
+            sh 'az logout'
         }
     }
-
-}
-
+    
     post { 
         always { 
             cleanWs()
