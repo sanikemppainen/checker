@@ -65,7 +65,7 @@ stages {
     stage('Deploy to Azure Web App') {
         steps {
             script {
-                withCredentials([azureServicePrincipal('credentials_id')]) {
+                withCredentials([azureServicePrincipal('az-service-principal-credentials')]) {
 
                     def azureAppServiceName = 'checkerApp-12'
                     def dockerImage1 = 'backendDockerImage'
