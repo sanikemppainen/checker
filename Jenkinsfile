@@ -65,29 +65,29 @@ stages {
     stage('Deploy to Azure Web App') {
         steps {
             script {
-                def azureCredentials = credentials('az-service-principal-credentials')
-                def azureAppServiceName = 'checkerApp-12'
-                def dockerImage1 = 'backendDockerImage'
-                def dockerImage2 = 'frontendDockerImage'
+                withCredentials([azureServicePrincipal('credentials_id')]) {
 
-                sh "az login --service-principal -u ${azureCredentials.username} -p ${azureCredentials.secret} --tenant ${azureCredentials.tenant}"
+                    def azureAppServiceName = 'checkerApp-12'
+                    def dockerImage1 = 'backendDockerImage'
+                    def dockerImage2 = 'frontendDockerImage'
 
-                sh "az account set --subscription 2fb3df47-cbc0-4acb-9d14-6a6cbffae88d"
+                    sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
 
-                sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage1}"
+                    sh "az account set --subscription 2fb3df47-cbc0-4acb-9d14-6a6cbffae88d"
 
-                sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage1}"
 
-                sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage2}"
+                    sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
 
-                sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage2}"
+
+                    sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
+                
+                }
             }
-        }
+        }  
     }
-
-
 }
-
     post { 
         always { 
             cleanWs()
