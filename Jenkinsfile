@@ -72,7 +72,7 @@ stages {
 
                 sh "az login --service-principal -u ${azureCredentials.username} -p ${azureCredentials.secret} --tenant ${azureCredentials.tenant}"
 
-                sh "az account set --subscription  ${azureCredentials.subscriptionId}"
+                sh "az account set --subscription 2fb3df47-cbc0-4acb-9d14-6a6cbffae88d"
 
                 sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage1}"
 
