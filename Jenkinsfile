@@ -75,13 +75,13 @@ stages {
 
                     sh "az account set --subscription 2fb3df47-cbc0-4acb-9d14-6a6cbffae88d"
 
-                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage1}"
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ${dockerImage1}"
 
-                    sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
+                    sh "az webapp restart --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE"
 
-                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage2}"
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ${dockerImage2}"
 
-                    sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
+                    sh "az webapp restart --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE"
                 
                 }
             }
