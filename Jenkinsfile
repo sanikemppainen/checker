@@ -61,6 +61,26 @@ stages {
             }
         }
     }
+    stage('Build compose Image') {
+        steps {
+            script {
+                dockerComposeImage = docker.build("ksaniksani/checker-compose:latest", ".")
+            }
+        }
+    }
+
+    stage('Push compose Image') {
+        environment {
+            registryCredential = 'dockerhub-credentials'
+        }
+        steps {
+            script {
+                docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                    dockerComposeImage.push("latest")
+                }
+            }
+        }
+    }
 
     stage('Deploy to Azure Web App') {
         steps {
@@ -78,6 +98,10 @@ stages {
                     sh "az webapp restart --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE"
 
                     sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ksaniksani/checker-frontend:latest"
+
+                    sh "az webapp restart --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE"
+                
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ksaniksani/checker-compose:latest"
 
                     sh "az webapp restart --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE"
                 
