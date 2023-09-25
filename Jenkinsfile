@@ -61,19 +61,27 @@ stages {
             }
         }
     }
-    
-    stage('Azure Login') {
-        steps {
-            script {
-                def azureServicePrincipal = credentials('azureserviceprincipal-credentials')
-                withAzureServicePrincipal(
-                    credentialsId: 'azureserviceprincipal-credentials',
-                    subscriptionId: 'azure-subscription-id'
-                ){
-                    kubeconfig([credentialsId: 'kubernetes-credentials', serverUrl: 'https://cluster-1-dns-cfc5ka74.hcp.norwayeast.azmk8s.io:443', contextName: 'DefaultResourceGroup-NOE', clusterName:'cluster-1']) {
-                        sh 'kubectl apply --kubeconfig=$kubernetes-credentials -f deployment.yaml'
-                        sh 'kubectl apply --kubeconfig=$kubernetes-credentials -f service.yaml'
-                }
+
+    stages {
+        stage('Deploy to Azure Web App') {
+            steps {
+                script {
+                    def azureCredentials = credentials('az-service-principal-credentials')
+                    def azureAppServiceName = 'checkerApp-12'
+                    def dockerImage1 = 'backendDockerImage'
+                    def dockerImage2 = 'frontendDockerImage'
+
+                    sh "az login --service-principal -u ${azureCredentials.username} -p ${azureCredentials.secret} --tenant ${azureCredentials.tenant}"
+
+                    sh "az account set --subscription  ${azureCredentials.subscriptionId}"
+
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage1}"
+
+                    sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
+
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group your-resource-group-name --docker-custom-image-name ${dockerImage2}"
+
+                    sh "az webapp restart --name ${azureAppServiceName} --resource-group your-resource-group-name"
                 }
             }
         }
