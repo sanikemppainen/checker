@@ -68,18 +68,16 @@ stages {
                 withCredentials([azureServicePrincipal('az-service-principal-credentials')]) {
 
                     def azureAppServiceName = 'checkerApp-12'
-                    def dockerImage1 = 'backendDockerImage'
-                    def dockerImage2 = 'frontendDockerImage'
 
                     sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
 
                     sh "az account set --subscription 2fb3df47-cbc0-4acb-9d14-6a6cbffae88d"
 
-                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ${dockerImage1}"
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ksaniksani/checker-backend:latest"
 
                     sh "az webapp restart --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE"
 
-                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ${dockerImage2}"
+                    sh "az webapp config container set --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE --docker-custom-image-name ksaniksani/checker-frontend:latest"
 
                     sh "az webapp restart --name ${azureAppServiceName} --resource-group DefaultResourceGroup-NOE"
                 
